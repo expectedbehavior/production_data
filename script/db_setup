@@ -156,7 +156,7 @@ $ENVS.each do |env|
       puts "#{db} contains no tables, skipping"
     else
       puts "dropping tables in #{db}"
-      puts `echo "drop table if exists #{tables};" | mysql -u #{user} #{pw_opt} #{db}`
+      puts `echo "SET foreign_key_checks = 0; drop table if exists #{tables};" | mysql -u #{user} #{pw_opt} #{db}`
       if $? != 0
         puts "ERROR: couldn't drop table(s) on #{db}"
         exit 2
