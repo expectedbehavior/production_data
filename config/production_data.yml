@@ -1,0 +1,10 @@
+## email addresses matching these won't get filtered when importing
+# email_filter_exclusions:
+# - !ruby/regexp /@example.com/
+# - test@example.com
+# 
+## when filtering email addresses this is what to replace them with
+## so foo@example.net would become bar+foo.example.net@example.com 
+# filtered_email_address:
+# - bar+{{filtered_email}}@example.com
+

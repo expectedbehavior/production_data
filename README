@@ -1,0 +1,13 @@
+Plugin for handling the transfer of production data to the local dev environment, or to a staging server.
+
+# downloads the production data to the local machine
+rake get_production_data
+
+# imports data into the local database while filtering email addresses so the app doesn't send emails to live customers
+rake import_production_data
+
+# convenience command combining the previous two
+rake get_and_import_production_data
+
+# does the above steps, but pushes the data to the staging server
+cap production_data:db:clone_prod_to_staging_with_filtering
