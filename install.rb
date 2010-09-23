@@ -16,7 +16,7 @@ end
 puts
 dest_production_data_config = File.join(rails_root, ProductionDataHelpers::RELATIVE_CONFIG_PATH)
 if File.exist?(dest_production_data_config)
-  puts "Config was already installed to #{ProductionDataHelpers::RELATIVE_CONFIG_PATH}, check it out and edit it appropriately"
+  puts "Production Data config was already installed to #{ProductionDataHelpers::RELATIVE_CONFIG_PATH}, check it out and edit it appropriately"
 else
   FileUtils.cp File.join(File.dirname(__FILE__), ProductionDataHelpers::RELATIVE_CONFIG_PATH), dest_production_data_config
   puts "Example config installed to #{ProductionDataHelpers::RELATIVE_CONFIG_PATH}, check it out and edit it appropriately"
