@@ -1,1 +1,4 @@
 *~
+*.bkp
+test/fake_app/config/database.yml
+test/fake_app/script/db_setup

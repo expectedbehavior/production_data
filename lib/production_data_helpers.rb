@@ -1,7 +1,8 @@
 require 'yaml'
 module ProductionDataHelpers
 
-  CONFIG_FILE = File.join(RAILS_ROOT, "config", "production_data.yml")
+  RELATIVE_CONFIG_PATH = File.join("config", "production_data.yml")
+  CONFIG_FILE = File.join(RAILS_ROOT, RELATIVE_CONFIG_PATH)
 #   CONFIG_FILE = File.join(File.dirname(__FILE__), "..", "..", "..", "..", "config", "production_data.yml")
   DEFAULT_CONFIG = {
     'email_filter_exclusions' => [],
