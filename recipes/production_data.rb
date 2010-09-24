@@ -1,3 +1,35 @@
+def environment_info
+  @environment_info ||= 
+    begin
+      run("cat #{current_path}/config/database.yml") do |channel, stream, data|
+        @environment_info = YAML.load(data)[rails_env]
+      end
+      @environment_info
+    end
+end
+
+task :dump_database_config_from_production_to_tmp do
+  run("cat #{current_path}/config/database.yml") do |channel, stream, data|
+    File.open(File.join("tmp", "production_db_config.yml"), "w") { |f| f.write data }
+  end
+end
+
+def production_database
+  environment_info["database"]
+end
+
+def production_dbhost
+  environment_info["host"]
+end
+
+def dbuser
+  environment_info["username"]
+end
+
+def dbpass
+  environment_info["password"]
+end
+
 namespace :production_data do
   namespace :db do
     desc "Backup your MySQL database to shared_path+/db_backups with one insert on a line"
