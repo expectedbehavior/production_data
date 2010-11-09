@@ -3,7 +3,7 @@ require "yaml"
 require 'erb'
 require 'zlib'
 
-require File.join(File.dirname(__FILE__), "..", "lib", "production_data_helpers.rb")
+require File.join(File.dirname(__FILE__), "..", "production_data_helpers.rb")
 include ProductionDataHelpers
 
 LAST_GET_PRODUCTION_DATA_TIME_FILE = File.join(RAILS_ROOT, "tmp", "last_get_production_data_time.tmp")
