@@ -22,6 +22,14 @@ def production_dbhost
   environment_info["host"]
 end
 
+def staging_database
+  environment_info["database"]
+end
+
+def staging_dbhost
+  environment_info["host"]
+end
+
 def dbuser
   environment_info["username"]
 end

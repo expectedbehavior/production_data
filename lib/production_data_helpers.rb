@@ -37,7 +37,7 @@ module ProductionDataHelpers
     @production_data_configuration ||=
       begin
         config = if File.exist?(CONFIG_FILE)
-          YAML.load_file(CONFIG_FILE)
+          YAML.load_file(CONFIG_FILE) || {}
         else
           {}
         end
