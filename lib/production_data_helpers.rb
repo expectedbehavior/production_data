@@ -67,10 +67,7 @@ module ProductionDataHelpers
   end
 
   def initialize_db
-    cmd = <<-CMD
-      cd #{RAILS_ROOT} &&
-        ruby script/db_setup -e #{RAILS_ENV}
-    CMD
+    cmd = "cd #{RAILS_ROOT} && ruby script/db_setup -e #{RAILS_ENV}"
     puts "initializing DB with command: \n#{cmd}"
     system cmd or fail "Error importing production data with command: \n#{cmd}"
   end

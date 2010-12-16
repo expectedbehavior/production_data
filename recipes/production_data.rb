@@ -80,11 +80,15 @@ namespace :production_data do
       top.db.backup_name
       filename = "tmp/#{File.basename(backup_file)}.bz2"
 
-      system "cap production production_data:db:dump_to_local FILE='#{filename}'"
+      unless system "rake transfer_assets_to_staging"
+        puts "Transfer of assets to staging failed.  Make sure you have a rake task named 'transfer_assets_to_staging' defined if you would like to transfer assets to staging."
+      end
+      
+      system "cap production production_data:db:dump_to_local FILE='#{filename}'" and
 
-      system "cap staging production_data:db:upload_db_dump FILE='#{filename}'"
+        system "cap staging production_data:db:upload_db_dump FILE='#{filename}'" and
 
-      system "cap staging production_data:db:remote_import_and_migrate FILE='#{filename}'"
+        system "cap staging production_data:db:remote_import_and_migrate FILE='#{filename}'"
     end
   end
 end
