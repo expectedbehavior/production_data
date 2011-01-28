@@ -8,9 +8,9 @@ def environment_info
     end
 end
 
-task :dump_database_config_from_production_to_tmp do
+task :dump_database_config_to_tmp do
   run("cat #{current_path}/config/database.yml") do |channel, stream, data|
-    File.open(File.join("tmp", "production_db_config.yml"), "w") { |f| f.write data }
+    File.open(File.join("tmp", "db_config_#{rails_env}.yml"), "w") { |f| f.write data }
   end
 end
 

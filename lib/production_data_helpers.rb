@@ -30,6 +30,7 @@ module ProductionDataHelpers
       
       block.call line
     end
+    print "\r#{i} lines imported"
     puts "\nfinished"
   end
 
@@ -100,12 +101,12 @@ module ProductionDataHelpers
   
   class MissingDatabaseConfigException < Exception; end
 
-  def database_config_from_production
+  def database_config_from(from_env)
     @database_config_from_production ||=
       begin
-        config_path = File.join("tmp", "production_db_config.yml")
+        config_path = File.join("tmp", "db_config_#{from_env}.yml")
         
-        unless system "cap production dump_database_config_from_production_to_tmp"
+        unless system "cap #{from_env} dump_database_config_to_tmp"
           puts "WARNING: couldn't get production config at the moment"
           if File.exist? config_path
             puts "Previously downloaded config data found, using it"
@@ -117,11 +118,11 @@ module ProductionDataHelpers
       end
   end
   
-  def source_db_config
+  def source_db_config(from_env)
     begin
-      database_config_from_production
+      database_config_from(from_env)
     rescue MissingDatabaseConfigException
-      puts "couldn't find production config, using destination db config for import replacement."
+      puts "couldn't find #{from_env} config, using destination db config for import replacement."
       destination_db_config
     end
   end

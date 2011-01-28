@@ -26,7 +26,7 @@ namespace :production_data do
     [:production, :staging].each do |from_env|
       desc "grabs recent #{from_env} data"
       task from_env do
-        last_time = Time.now.to_f - (newest_db_file_time(source_db_config, from_env) || 0).to_f
+        last_time = Time.now.to_f - (newest_db_file_time(source_db_config(from_env), from_env) || 0).to_f
 
         get_data_cmd = "cap #{from_env} production_data:db:dump_to_local"
         if GET_DATA_EVERY < last_time
@@ -49,7 +49,7 @@ namespace :production_data do
       desc "imports tmp/<whatever>.sql into dev DB"
       task from_env do
         to_db_config = destination_db_config
-        from_db_config = source_db_config
+        from_db_config = source_db_config(from_env)
         
         db_file_path = newest_db_file_path(from_db_config, from_env) || fail("Missing db file to import.")
         catter = db_catter(db_file_path)
@@ -82,7 +82,7 @@ namespace :production_data do
         end
         
         to_db_config = destination_db_config
-        from_db_config = source_db_config
+        from_db_config = source_db_config(from_env)
         
         db_file_path = newest_db_file_path(from_db_config, from_env) || fail("Missing db file to import.")
         catter = db_catter(db_file_path)
