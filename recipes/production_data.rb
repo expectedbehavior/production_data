@@ -45,8 +45,9 @@ namespace :production_data do
       top.db.backup_name
       if environment_info['adapter'] == 'mysql'
         dbhost = environment_info['host']
-        dbhost = environment_dbhost.sub('-master', '-replica') if dbhost != 'localhost' # added for Solo offering, which uses localhost
-        run "mysqldump --skip-extended-insert --add-drop-table -u #{dbuser} -h #{dbhost} -p #{environment_database} | bzip2 -c > #{backup_file}.bz2" do |ch, stream, out |
+        dbhost = environment_dbhost.sub('-master', '-replica') if dbhost && dbhost != 'localhost' # added for Solo offering, which uses localhost
+        dbhost_option = dbhost ? "-h #{dbhost}" : ""
+        run "mysqldump --skip-extended-insert --add-drop-table -u #{dbuser} #{dbhost_option} -p #{environment_database} | bzip2 -c > #{backup_file}.bz2" do |ch, stream, out |
           ch.send_data "#{dbpass}\n" if out=~ /^Enter password:/
         end
       else 
