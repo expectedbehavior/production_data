@@ -115,12 +115,12 @@ namespace :pd do
     task :staging => ['production_data:get_data:staging']
   end
   desc "imports tmp/<whatever>.sql into dev DB"
-  task :id => ['prodcution_data:import_data']
+  task :id => ['production_data:import_data']
   namespace :id do
     desc "imports tmp/<whatever>.sql into dev DB"
-    task :prod => ['prodcution_data:import_data:production']
+    task :prod => ['production_data:import_data:production']
     desc "imports tmp/<whatever>.sql into dev DB"
-    task :staging => ['prodcution_data:import_data:staging']
+    task :staging => ['production_data:import_data:staging']
   end
 end
 
