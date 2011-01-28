@@ -53,17 +53,24 @@ module ProductionDataHelpers
     end
   end
   
-  def newest_db_file_path(db_config)
+  def newest_db_file_path(db_config, from_env)
     # we specified the file to use on the command line, or...
-    p = ENV['DB_BACKUP_FILE'] ||
-      Dir["tmp/#{db_config["production"]["database"]}*"].sort_by do |x|
+    ENV['DB_BACKUP_FILE'] ||
+      Dir["tmp/#{db_config["production"]["database"]}*#{from_env}*"].sort_by do |x|
         # use the datetime in the filename to get the most recent (possibly without seconds)
-        dateish_string = x.match( /.*(\d\d\d\d)\D+(\d+)\D+(\d+)\D+(\d+)\D+(\d+)\D+(\d*)\D+/ )
-        date_ints = dateish_string[1, 6].map { |s| s.to_i } # we don't want to load all of rails, so no Symbol#to_proc
-        Time.local(*date_ints)
+        time_of_db_file_path(x)
       end.last
-    fail "missing a file to import.\nnewest database file: #{p}" unless p
-    p
+  end
+  
+  def newest_db_file_time(db_config, from_env)
+    p = newest_db_file_path(db_config, from_env)
+    p && time_of_db_file_path(p)
+  end
+  
+  def time_of_db_file_path(path)
+    dateish_string = path.match( /.*(\d\d\d\d)\D+(\d+)\D+(\d+)\D+(\d+)\D+(\d+)\D+(\d*)\D+/ )
+    date_ints = dateish_string[1, 6].map { |s| s.to_i } # we don't want to load all of rails, so no Symbol#to_proc
+    Time.local(*date_ints)
   end
 
   def initialize_db

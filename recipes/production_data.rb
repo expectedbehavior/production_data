@@ -36,7 +36,7 @@ namespace :production_data do
       now = Time.now
       run "mkdir -p #{shared_path}/db_backups"
       backup_time = [now.year,now.month,now.day,now.hour,now.min,now.sec].join('-')
-      set :backup_file, "#{shared_path}/db_backups/#{environment_database}-snapshot-#{backup_time}.sql"
+      set :backup_file, "#{shared_path}/db_backups/#{environment_database}-snapshot-#{backup_time}-#{rails_env}.sql"
     end
 
     desc "Backup your MySQL database to shared_path+/db_backups with one insert on a line"
