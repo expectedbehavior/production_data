@@ -14,19 +14,11 @@ task :dump_database_config_from_production_to_tmp do
   end
 end
 
-def production_database
+def environment_database
   environment_info["database"]
 end
 
-def production_dbhost
-  environment_info["host"]
-end
-
-def staging_database
-  environment_info["database"]
-end
-
-def staging_dbhost
+def environment_dbhost
   environment_info["host"]
 end
 
