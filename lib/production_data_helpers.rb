@@ -56,7 +56,7 @@ module ProductionDataHelpers
   def newest_db_file_path(db_config, from_env)
     # we specified the file to use on the command line, or...
     ENV['DB_BACKUP_FILE'] ||
-      Dir["tmp/#{db_config["production"]["database"]}*#{from_env}*"].sort_by do |x|
+      Dir["tmp/#{db_config[from_env.to_s]["database"]}*#{from_env}*"].sort_by do |x|
         # use the datetime in the filename to get the most recent (possibly without seconds)
         time_of_db_file_path(x)
       end.last
