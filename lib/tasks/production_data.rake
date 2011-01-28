@@ -10,14 +10,21 @@ GET_DATA_EVERY = 60 * 60 * 12 # once every 12 hours
 
 namespace :production_data do
   desc "convenience task for getting and importing production data"
-  task :get_and_import_data_data => ['production_data:get_data', 'production_data:import_data']
+  task :get_and_import_data => ['production_data:get_data', 'production_data:import_data']
+  
+  namespace :get_and_import_data do
+    [:production, :staging].each do |from_env|
+      desc "grabs recent #{from_env} data and loads it into your development db"
+      task from_env => ["production_data:get_data:#{from_env}", "production_data:import_data:#{from_env}"]
+    end
+  end
 
   desc "convenience task for getting production data"
   task :get_data => ['production_data:get_data:production']
 
   namespace :get_data do
     [:production, :staging].each do |from_env|
-      desc "grabs recent #{from_env} data and loads it into your development db"
+      desc "grabs recent #{from_env} data"
       task from_env do
         last_time = Time.now.to_f - (newest_db_file_time(source_db_config, from_env) || 0).to_f
 
@@ -92,13 +99,19 @@ end
 # shortcuts
 namespace :pd do
   desc "convenience task for getting and importing production data"
-  task :gid => ['production_data:get_and_import_data_data']
+  task :gid => ['production_data:get_and_import_data']
+  namespace :gid do
+    desc "grabs recent production data and loads it into your development db"
+    task :prod => ['production_data:get_and_import_data:production']
+    desc "grabs recent staging data and loads it into your development db"
+    task :staging => ['production_data:get_and_import_data:staging']
+  end
   desc "convenience task for getting production data"
   task :gd => ['production_data:get_data']
   namespace :gd do
-    desc "grabs recent production data and loads it into your development db"
+    desc "grabs recent production data"
     task :prod => ['production_data:get_data:production']
-    desc "grabs recent staging data and loads it into your development db"
+    desc "grabs recent staging data"
     task :staging => ['production_data:get_data:staging']
   end
   desc "imports tmp/<whatever>.sql into dev DB"
