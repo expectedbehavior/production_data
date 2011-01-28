@@ -40,9 +40,16 @@ end
 
 namespace :production_data do
   namespace :db do
+    task :backup_name, :roles => :db, :only => { :primary => true } do
+      now = Time.now
+      run "mkdir -p #{shared_path}/db_backups"
+      backup_time = [now.year,now.month,now.day,now.hour,now.min,now.sec].join('-')
+      set :backup_file, "#{shared_path}/db_backups/#{environment_database}-snapshot-#{backup_time}.sql"
+    end
+
     desc "Backup your MySQL database to shared_path+/db_backups with one insert on a line"
     task :dump_with_many_inserts, :roles => :db, :only => {:primary => true} do
-      top.db.backup_name
+      backup_name
       if environment_info['adapter'] == 'mysql'
         dbhost = environment_info['host']
         dbhost = environment_dbhost.sub('-master', '-replica') if dbhost && dbhost != 'localhost' # added for Solo offering, which uses localhost
@@ -57,7 +64,7 @@ namespace :production_data do
 
     desc "Sync your production database to your local workstation"
     task :dump_to_local, :roles => :db, :only => {:primary => true} do
-      top.db.backup_name
+      backup_name
       dump_with_many_inserts
       filename = ENV['FILE'] || "tmp/#{File.basename(backup_file)}.bz2"
       get "#{backup_file}.bz2", filename # "/tmp/#{application}.sql.gz"
@@ -78,7 +85,7 @@ namespace :production_data do
     desc "Clone Production Database to Staging Database."
     task :clone_prod_to_staging_with_filtering, :roles => :db, :only => { :primary => true } do
       top.production
-      top.db.backup_name
+      backup_name
       filename = "tmp/#{File.basename(backup_file)}.bz2"
 
       unless system "rake transfer_assets_to_staging"
