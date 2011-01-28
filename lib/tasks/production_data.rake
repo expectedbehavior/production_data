@@ -116,6 +116,12 @@ namespace :pd do
   end
   desc "imports tmp/<whatever>.sql into dev DB"
   task :id => ['prodcution_data:import_data']
+  namespace :id do
+    desc "imports tmp/<whatever>.sql into dev DB"
+    task :prod => ['prodcution_data:import_data:production']
+    desc "imports tmp/<whatever>.sql into dev DB"
+    task :staging => ['prodcution_data:import_data:staging']
+  end
 end
 
 ## these are just here so we're backwards compatible
