@@ -8,15 +8,15 @@ require "yaml"
 require 'highline/import'
 
 opts = GetoptLong.new(*[
-                      [ '--help', '-h', GetoptLong::NO_ARGUMENT ],
-#                      [ '--verbose', '-v', GetoptLong::REQUIRED_ARGUMENT ],
-                      [ '--create', '-c', GetoptLong::NO_ARGUMENT ],
+                      [ '--help',        '-h', GetoptLong::NO_ARGUMENT ],
+#                      [ '--verbose',    '-v', GetoptLong::REQUIRED_ARGUMENT ],
+                      [ '--create',      '-c', GetoptLong::NO_ARGUMENT ],
                       [ '--development', '-d', GetoptLong::NO_ARGUMENT ],
-                      [ '--production', '-p', GetoptLong::NO_ARGUMENT ],
-                      [ '--test', '-t', GetoptLong::NO_ARGUMENT ],
+                      [ '--production',  '-p', GetoptLong::NO_ARGUMENT ],
+                      [ '--test',        '-t', GetoptLong::NO_ARGUMENT ],
                       [ '--environment', '-e', GetoptLong::REQUIRED_ARGUMENT ],
-                      [ '--password', '-s', GetoptLong::OPTIONAL_ARGUMENT],
-                      [ '--output', '-o', GetoptLong::REQUIRED_ARGUMENT]
+                      [ '--password',    '-s', GetoptLong::OPTIONAL_ARGUMENT],
+                      [ '--output',      '-o', GetoptLong::REQUIRED_ARGUMENT]
                       ]
                       )
 
