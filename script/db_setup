@@ -15,7 +15,7 @@ opts = GetoptLong.new(*[
                       [ '--production', '-p', GetoptLong::NO_ARGUMENT ],
                       [ '--test', '-t', GetoptLong::NO_ARGUMENT ],
                       [ '--environment', '-e', GetoptLong::REQUIRED_ARGUMENT ],
-                      [ '--password', '-s', GetoptLong::REQUIRED_ARGUMENT],
+                      [ '--password', '-s', GetoptLong::OPTIONAL_ARGUMENT],
                       [ '--output', '-o', GetoptLong::REQUIRED_ARGUMENT]
                       ]
                       )
