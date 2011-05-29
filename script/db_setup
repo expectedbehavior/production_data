@@ -22,10 +22,10 @@ opts = GetoptLong.new(*[
                       )
 
 $CREATE = false
-Rails.root = File.expand_path(File.join(File.dirname(__FILE__), "/../"))
-puts Rails.root
+RAILS_ROOT = File.expand_path(File.join(File.dirname(__FILE__), "/../"))
+puts RAILS_ROOT
 $ENVS = []
-$DB_DIR = File.join Rails.root, "db"
+$DB_DIR = File.join RAILS_ROOT, "db"
 $DB_PASS = nil
 $OUTPUT_FILE = nil
 
@@ -69,7 +69,7 @@ end
 
 #exit 0
 
-$DB_CONFIG = YAML.load(ERB.new(File.open(File.join(Rails.root, "config", "database.yml")) {|f| f.read}).result(binding))
+$DB_CONFIG = YAML.load(ERB.new(File.open(File.join(RAILS_ROOT, "config", "database.yml")) {|f| f.read}).result(binding))
 
 if $ENVS == []
   $ENVS = $DB_CONFIG.keys
