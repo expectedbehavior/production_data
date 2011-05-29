@@ -71,7 +71,7 @@ namespace :production_data do
     desc "Import db dump on server (requires FILE arg)"
     task :remote_import_and_migrate, :roles => :db, :only => { :primary => true } do
       filename = ENV['FILE']
-      run "cd #{current_path} && RAILS_ENV='#{rails_env}' rake import_production_data DB_BACKUP_FILE='#{filename}' --trace && RAILS_ENV='#{rails_env}' rake db:migrate --trace"
+      run "cd #{current_path} && Rails.env='#{rails_env}' rake import_production_data DB_BACKUP_FILE='#{filename}' --trace && Rails.env='#{rails_env}' rake db:migrate --trace"
     end
     
     desc "Clone Production Database to Staging Database."

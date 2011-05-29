@@ -2,7 +2,7 @@ require 'yaml'
 module ProductionDataHelpers
 
   RELATIVE_CONFIG_PATH = File.join("config", "production_data.yml")
-  CONFIG_FILE = File.join(RAILS_ROOT, RELATIVE_CONFIG_PATH)
+  CONFIG_FILE = File.join(Rails.root, RELATIVE_CONFIG_PATH)
 #   CONFIG_FILE = File.join(File.dirname(__FILE__), "..", "..", "..", "..", "config", "production_data.yml")
   DEFAULT_CONFIG = {
     'email_filter_exclusions' => [],
@@ -75,14 +75,14 @@ module ProductionDataHelpers
   end
 
   def initialize_db
-    cmd = "cd #{RAILS_ROOT} && ruby script/db_setup -e #{RAILS_ENV}"
+    cmd = "cd #{Rails.root} && ruby script/db_setup -e #{Rails.env}"
     puts "initializing DB with command: \n#{cmd}"
     system cmd or fail "Error importing production data with command: \n#{cmd}"
   end
 
   def filter_credentials!(line, from_db_config, to_db_config)
-    line.gsub!(/`#{from_db_config['production']['username']}`/, "`#{to_db_config[RAILS_ENV]['username']}`")
-    line.gsub!(/`#{from_db_config['production']['database']}`/, "`#{to_db_config[RAILS_ENV]['database']}`")
+    line.gsub!(/`#{from_db_config['production']['username']}`/, "`#{to_db_config[Rails.env]['username']}`")
+    line.gsub!(/`#{from_db_config['production']['database']}`/, "`#{to_db_config[Rails.env]['database']}`")
   end
 
   def filter_emails!(line)
@@ -128,7 +128,7 @@ module ProductionDataHelpers
   end
   
   def destination_db_config
-    YAML.load(ERB.new(File.open(File.join(RAILS_ROOT, "config", "database.yml")) {|f| f.read}).result(binding))
+    YAML.load(ERB.new(File.open(File.join(Rails.root, "config", "database.yml")) {|f| f.read}).result(binding))
   end
   
 end

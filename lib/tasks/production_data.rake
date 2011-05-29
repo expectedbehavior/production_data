@@ -54,9 +54,9 @@ namespace :production_data do
         db_file_path = newest_db_file_path(from_db_config, from_env) || fail("Missing db file to import.")
         catter = db_catter(db_file_path)
         
-        to_username = to_db_config[RAILS_ENV]['username']
-        to_password = to_db_config[RAILS_ENV]['password']
-        to_database = to_db_config[RAILS_ENV]['database']
+        to_username = to_db_config[Rails.env]['username']
+        to_password = to_db_config[Rails.env]['password']
+        to_database = to_db_config[Rails.env]['database']
         
         initialize_db
         
