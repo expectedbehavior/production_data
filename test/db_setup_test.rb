@@ -7,7 +7,7 @@ require 'highline/import'
 
 class DbSetupTest < Test::Unit::TestCase # ActiveSupport::TestCase
 
-  SCRIPT_PATH = File.expand_path(File.join(File.dirname(__FILE__), '..', 'script', 'db_setup'))
+  SCRIPT_PATH = File.expand_path(File.join(File.dirname(__FILE__), '..', 'bin', 'db_setup'))
   FAKE_APP_PATH = File.expand_path(File.join(File.dirname(__FILE__), 'fake_app'))
   FAKE_DB_CONFIG_PATH = File.join(FAKE_APP_PATH, 'config', 'database.yml')
 #   ROOT_PW = ask("gimme root sql password: ") { |q| q.echo = false}
