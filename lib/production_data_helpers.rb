@@ -48,9 +48,9 @@ module ProductionDataHelpers
 
   def db_catter(filename)
     case filename
-      when /\.gz$/  : "zcat"
-      when /\.bz2$/ : "bzcat"
-      else            "cat"
+      when /\.gz$/  then "zcat"
+      when /\.bz2$/ then "bzcat"
+      else               "cat"
     end
   end
   
