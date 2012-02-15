@@ -1,17 +1,15 @@
 def environment_info
   @environment_info ||= 
     begin
-      run("cat #{current_path}/config/database.yml") do |channel, stream, data|
-        @environment_info = YAML.load(data)[rails_env]
-      end
+      data = capture("cat #{current_path}/config/database.yml")
+      @environment_info = YAML.load(data)[rails_env]
       @environment_info
     end
 end
 
 task :dump_database_config_to_tmp do
-  run("cat #{current_path}/config/database.yml") do |channel, stream, data|
-    File.open(File.join("tmp", "db_config_#{rails_env}.yml"), "w") { |f| f.write data }
-  end
+  data = capture("cat #{current_path}/config/database.yml")
+  File.open(File.join("tmp", "db_config_#{rails_env}.yml"), "w") { |f| f.write data }
 end
 
 def environment_database
