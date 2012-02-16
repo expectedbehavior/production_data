@@ -22,7 +22,7 @@ opts = GetoptLong.new(*[
                       )
 
 $CREATE = false
-RAILS_ROOT = File.expand_path(File.join(File.dirname(__FILE__), "/../"))
+RAILS_ROOT = '.' # File.expand_path(File.join(File.dirname(__FILE__), "/../"))
 puts RAILS_ROOT
 $ENVS = []
 $DB_DIR = File.join RAILS_ROOT, "db"
