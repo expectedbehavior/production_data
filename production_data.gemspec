@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'production_data'
-  s.version     = '0.0.0'
+  s.version     = '0.0.1'
   s.date        = '2012-02-15'
   s.summary     = "Get you some production data!"
   s.description = "A gem to pull down production data, sanitize it, and import it for local development and testing."
