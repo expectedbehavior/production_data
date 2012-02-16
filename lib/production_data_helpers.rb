@@ -2,7 +2,7 @@ require 'yaml'
 module ProductionDataHelpers
 
   RELATIVE_CONFIG_PATH = File.join("config", "production_data.yml")
-  CONFIG_FILE = File.join(Rails.root, RELATIVE_CONFIG_PATH)
+#   CONFIG_FILE = File.join(Rails.root, RELATIVE_CONFIG_PATH)
 #   CONFIG_FILE = File.join(File.dirname(__FILE__), "..", "..", "..", "..", "config", "production_data.yml")
   DEFAULT_CONFIG = {
     'email_filter_exclusions' => [],
@@ -11,6 +11,10 @@ module ProductionDataHelpers
 
   #                               |-| gobble escaped quotes so we don't end up removing the '\' that was escaping it
   EMAIL_REGEXP = /[^ ']+@[^ ']+\.(\\'|[^ '])+/i
+  
+  def config_file
+    File.join(Rails.root, RELATIVE_CONFIG_PATH)
+  end
 
   def filter_lines_and_apply!(str, from_db_config, to_db_config, &block)
     i = 0
@@ -37,8 +41,8 @@ module ProductionDataHelpers
   def configuration
     @production_data_configuration ||=
       begin
-        config = if File.exist?(CONFIG_FILE)
-          YAML.load_file(CONFIG_FILE) || {}
+        config = if File.exist?(config_file)
+          YAML.load_file(config_file) || {}
         else
           {}
         end
