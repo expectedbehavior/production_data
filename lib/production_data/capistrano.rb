@@ -45,7 +45,7 @@ if Capistrano::Configuration.instance
         desc "Backup your MySQL database to shared_path+/db_backups with one insert on a line"
         task :dump_with_many_inserts, :roles => :db, :only => {:primary => true} do
           backup_name
-          if environment_info['adapter'] == 'mysql'
+          if environment_info['adapter'] =~ /mysql/
             dbhost = environment_info['host']
             dbhost = environment_dbhost.sub('-master', '-replica') if dbhost && dbhost != 'localhost' # added for Solo offering, which uses localhost
             dbhost_option = dbhost ? "-h #{dbhost}" : ""
