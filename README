@@ -1,4 +1,22 @@
-Plugin for handling the transfer of production data to the local dev environment, or to a staging server.
+Gem for handling the transfer of production data to the local dev environment, or to a staging server.
+
+Installation
+================================================================
+Add to your Gemfile:
+
+gem 'production_data', :git => "https://github.com/expectedbehavior/production_data.git"
+
+Add to your Rakefile:
+
+require 'production_data/tasks'
+
+Add to config/deploy.rb:
+
+require 'production_data/capistrano'
+
+
+Usage
+================================================================
 
 # Downloads the production data to the local machine
 rake get_production_data
@@ -16,7 +34,7 @@ cap production_data:db:clone_prod_to_staging_with_filtering
 
 Email address filtering
 ================================================================
-Generally you don't want to use real email addresses outside of staging just in case you trigger and action that sends emails.  It's better to mangle the email addresses as you import them so if you accidentally do send any email it goes to a harmless address instead of real customers.
+Generally you don't want to use real email addresses outside of staging just in case you trigger an action that sends emails.  It's better to mangle the email addresses as you import them so if you accidentally do send any email it goes to a harmless address instead of real customers.
 
 This email address filter is controlled by the production_data.yml configuration file in the config directory.  In there you'll see something like this:
 
