@@ -1,0 +1,75 @@
+A ruby gem for handling the transfer of production data to the local dev environment or a staging server.
+
+##Installation
+
+Add to your `Gemfile`:
+
+`gem 'production_data', :git => "https://github.com/expectedbehavior/production_data.git"`
+
+Add to your `Rakefile`:
+
+`require 'production_data/tasks'`
+
+Add to `config/deploy.rb`:
+
+`require 'production_data/capistrano'`
+
+Generate the config:
+
+`rails generate production_data:config`
+
+
+##Usage
+
+### Downloads the production data to the local machine
+`rake get_production_data`
+
+### Imports data into the local database while filtering email addresses so the app doesn't send emails to live customers
+`rake import_production_data`
+
+### Convenience command combining the previous two
+`rake get_and_import_production_data`
+
+### Does the above steps, but pushes the data to the staging server instead of importing it locally
+### depends on 'production' and 'staging' envs for capistrano (as you would to make "cap production deploy" or "cap staging deploy" work)
+`cap production_data:db:clone_prod_to_staging_with_filtering`
+
+
+##Email address filtering
+
+Generally you don't want to use real email addresses outside of staging just in case you trigger an action that sends emails.  It's better to mangle the email addresses as you import them so if you accidentally do send any email it goes to a harmless address instead of real customers.
+
+This email address filter is controlled by the `production_data.yml` configuration file in the config directory.  In there you'll see something like this:
+
+#### email addresses matching these won't get filtered when importing
+```
+email_filter_exclusions:
+- !ruby/regexp /@example.com/
+- test@example.com
+```
+
+### when filtering email addresses this is what to replace them with so foo@example.net would become bar+foo.example.net@example.com filtered_email_address:
+- `bar+{{filtered_email}}@example.com`
+
+The first part defines exclusions to the email filtering.  This is great for developers or testers who may have some data in production and want to transfer it over to development or staging.  In the above example "test@example.com" will be transferred un-altered, so you'll be able to use that email address to login to the staging server.
+
+The second part defines how the email addresses are transformed.  The string `{{filtered_email}}` will be replaced by a sanatized version of the original email address.  For example, if "john@doe.com" was in the production database, then these filters would leave you with "bar+john.doe.com@example.com" in the staging database.  This is great with gmail addresses because you can forward all accidental email to your gmail account, and still know who the email was meant for.
+
+
+
+##db_setup
+
+This is a script to facilitate the creation of databases for a rails project.  It will use your `database.yml` file to create databases and users.
+
+## example:
+`script/db_setup -c -d -t`
+
+This will drop and create (-c) the development (-d) and test (-t) databases, which will require the mysql root password.
+
+`script/db_setup -d`
+
+This will drop all of the tables in the development database so it's ready for a fresh import or migrate.
+
+`script/db_setup -h`
+
+View the db_setup with with more options and explanation.
